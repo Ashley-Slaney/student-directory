@@ -1,5 +1,6 @@
 @students = []
 
+
 def interactive_menu
   loop do
     print_menu
@@ -11,28 +12,8 @@ def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
   puts "3. Save the list to students.csv"
+  puts "4. Load the list from students.csv"
   puts "9. Exit"
-end
-
-def process(selection)
-  case selection
-    when "1"
-      input_students
-    when "2"
-      show_students
-    when "3"
-      save_students
-    when "9"
-      exit
-    else
-      puts "I don't know what you mean, try again"
-  end
-end
-
-def show_students
-  print_header
-  print_students_list(@students)
-  print_footer(@students)
 end
 
 def input_students
@@ -80,6 +61,38 @@ def input_students
     
   end
   return students
+end
+
+def process(selection)
+  case selection
+    when "1"
+      input_students
+    when "2"
+      show_students
+    when "3"
+      save_students
+    when "4"
+      load_students
+    when "9"
+      exit
+    else
+      puts "I don't know what you mean, try again"
+  end
+end
+
+def show_students
+  print_header
+  print_students_list(@students)
+  print_footer(@students)
+end
+
+def load_students
+  file = File.open("students.csv", "r")
+  file.readlines.each do |line|
+  name, cohort = line.chomp.split(",")
+    @students << {name: name, cohort: cohort.to_sym}
+  end
+  file.close
 end
 
 def print_header
